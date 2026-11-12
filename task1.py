@@ -29,6 +29,5 @@ def score(S):
 
 S = genRandText()
 
-print("Monkey type:")
-print(S)
+print("Monkey type:", S)
 print("Monkey score:", score(S))
