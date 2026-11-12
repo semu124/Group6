@@ -15,7 +15,7 @@ def genRandText():
 def score(S):
     
     T = "he who seeks rest finds boredom. he who seeks work finds rest."
-    assert len(string) == len(T)
+    assert len(S) == len(T)
 
     score = 0
     
