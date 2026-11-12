@@ -12,23 +12,23 @@ def genRandText():
     return S
 
 
-def score(string):
+def score(S):
     
     T = "he who seeks rest finds boredom. he who seeks work finds rest."
     assert len(string) == len(T)
 
     score = 0
     
-    for i in range(len(string)):
+    for i in range(len(S)):
         
-        if string[i] == T[i]:
+        if S[i] == T[i]:
             score += 1
     
     return score
 
 
-string = genRandText()
+S = genRandText()
 
 print("Monkey type:")
-print(string)
-print("Monkey score:", score(string))
+print(S)
+print("Monkey score:", score(S))
