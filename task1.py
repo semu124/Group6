@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 # Random String Function
 def genRandText():
     
-    alphabet = "abcdefghijklmnopqrstuvwxyz, "
+    alphabet = "abcdefghijklmnopqrstuvwxyz. "
     S = ""
     
     for i in range(62):
@@ -39,13 +39,14 @@ for i in range(0, n):
 
     S = genRandText()
     
+    score_list.append(score(S))
+    
     if score(S) == 62:
         
         print("Success!")
         
         break
     
-    score_list.append(score(S))
 
 
 # Text Output
@@ -55,9 +56,16 @@ print("WORST monkey score: ", min(score_list))
 print("Mean monkey score: ", sum(score_list) / len(score_list))
 
 # Graphical Output
-plt.scatter(range(1, n+1), score_list)
+# scatter
+plt.scatter(range(1, len(score_list) + 1), score_list)
 plt.xlabel("Iteration")
 plt.ylabel("Monkey Score")
 plt.title("Distribution of Monkey Scores")
+plt.show()
+# Histogram
+plt.hist(score_list, bins=range(63))
+plt.title("Distribution of Monkey scores")
+plt.xlabel("Monkey scores")
+plt.ylabel("Frequency")
 plt.show()
 
