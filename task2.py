@@ -5,7 +5,7 @@
 
 def babyS(S):
     """
-    Creates a clone of S with x = 1 at a randomly position in S changed to a random character from the alphabet
+    Creates a clone of S and randomly position in S is changed to a random character from the alphabet
     """
     alphabet = "abcdefghijklmnopqrstuvwxyz. " # the alphabet to choose from
 
@@ -26,3 +26,34 @@ def babyS(S):
                        # to S_dash hence it becomes a copy of S with one letter chaneged
         
     return S_dash
+
+S = genRandText() # this generates a random string S of length 62
+current_score = score(S) # this gives a score for this S using the score function
+
+score_list = [current_score] # this creates a list of the scores
+
+n = int(input("Number of iterations for Target attempt ")) # this asks the user to input a their number of iterations
+
+for i in range(0, n): # Now we repeat the above process n times
+    
+
+    S_dash = babyS(S) # this calls the babyS function and uses S as its list, this value is then stored as S'
+    
+    # Calculate score of S_dash, if better than S it replaces S by S_prime
+    new_score = score(S_dash) # this scores the S' function so we can compare it to the score of S
+    if new_score > current_score: # if new_score > current_score we use S' as the new S
+        S = S_dash # if true replace S with S_dash
+        current_score = new_score # update the current score if true
+        
+    score_list.append(current_score) # this adds the above score to the list of scores
+
+    if current_score == 62: # this checks if the score has reached the maximun possible value
+
+        print("Success, you have found !")
+   
+        break # this forces it to break if the score limit is reached
+
+print("Final string: ", S)  
+
+
+
