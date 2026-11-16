@@ -50,20 +50,20 @@ for i in range(0, n):
 
 
 # Text Output
-print("Monkey scores: ", score_list)
+print("Monkey scores: ", score_list) # Possibly avoid this as it is too much on massive numbers like n = 1000000
 print("BEST monkey score: ", max(score_list))
 print("WORST monkey score: ", min(score_list))
 print("Mean monkey score: ", sum(score_list) / len(score_list))
 
 # Graphical Output
 # scatter
-plt.scatter(range(1, len(score_list) + 1), score_list)
+plt.scatter(range(1, len(score_list) + 1), score_list,  edgecolour ="black", alpha=0.6)
 plt.xlabel("Iteration")
 plt.ylabel("Monkey Score")
 plt.title("Distribution of Monkey Scores")
 plt.show()
 # Histogram
-plt.hist(score_list, bins=range(63))
+plt.hist(score_list, bins=range(63), edgecolor="black", alpha=0.6)
 plt.title("Distribution of Monkey scores")
 plt.xlabel("Monkey scores")
 plt.ylabel("Frequency")
