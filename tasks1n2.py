@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 
 # Random String Function
 def genRandText():
-    
     alphabet = "abcdefghijklmnopqrstuvwxyz. "
     S = ""
     
@@ -14,14 +13,11 @@ def genRandText():
 
 # String Scoring Function
 def score(S):
-    
     T = "he who seeks rest finds boredom. he who seeks work finds rest."
     assert len(S) == len(T)
-
     score = 0
     
     for i in range(len(S)):
-        
         if S[i] == T[i]:
             score += 1
     
@@ -70,4 +66,13 @@ for i in range(0, n):
 
     score_list.append(current_score)
 
+#Output Messages
+print("Final score:     ", current_score)
 print("Final string:    ", S)
+
+#Output Graphs
+plt.plot(score_list)
+plt.xlabel("Iteration")
+plt.ylabel("Score")
+plt.title("Evolution of Score")
+plt.show()
