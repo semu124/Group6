@@ -54,7 +54,7 @@ plt.title("Distribution of Monkey Scores")
 plt.show()
 
 # Histogram
-plt.hist(score_list, bins = range(range_scores), edgecolor = "black")
+plt.hist(score_list, bins = range(range_scores + 1), edgecolor = "black")
 plt.title("Distribution of Monkey scores")
 plt.xlabel("Monkey scores")
 plt.ylabel("Frequency")
