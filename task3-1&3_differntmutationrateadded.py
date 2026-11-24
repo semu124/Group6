@@ -82,3 +82,39 @@ plt.title("Evolution of Score")
 plt.legend()
 plt.grid()
 plt.show()
+
+## part 3, randomly selecting incorrect positions only 
+runs_p3 = int(input("Number of runs for part 3: "))
+iteration = (int(input("Number of iteration for part 3: ")))
+for run in range(runs_p3):
+    S = genRandText()
+    current_score = score(S)
+    task3_score = []
+    
+    
+    for i in range(iteration):
+        incorrect_position =[i for i in range(len(S)) if S[i] != T[i]]
+        if not incorrect_position:
+          break
+        position = random.choice(incorrect_position)
+     
+        new_character = random.choice(alphabet)
+        S_prime = list(S)
+        S_prime[position] = new_character
+        S_prime = "".join(S_prime)
+        new_score = score(S_prime)
+
+        if new_score > current_score:
+            S = S_prime
+            current_score = new_score
+        task3_score.append(current_score)    
+        if current_score == len(S):
+            break  
+
+# graphs, to show the progress across iteration
+plt.scatter(range(1, len(task3_score) + 1), task3_score, label='task 3', alpha=0.7)
+plt.title("Monkey scores against Iteration")
+plt.xlabel("Iteration")
+plt.ylabel("Monkey scores")
+plt.legend()
+plt.show()  
