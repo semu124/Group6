@@ -97,8 +97,6 @@ for i in range(0, number_of_runs):
 stats_mean = sum(stats_iteration_list) / len(stats_iteration_list)
 stats_data = np.array(stats_iteration_list)
 stats_std = stats_data.std(ddof = 1)
-stats_x = np.linspace(stats_data.min() - stats_std, stats_data.max() + stats_std, 500)
-stats_pdf = np.exp(-0.5 * ((stats_x - stats_mean) / stats_std) ** 2) / (stats_std * np.sqrt(2 * np.pi))
 iterations_included = len(stats_iteration_list)
 omitted_iterations.sort()
 
@@ -127,7 +125,6 @@ plt.show()
 
 # Adjujsted Normal
 plt.hist(stats_data, bins = 30, density = True, edgecolor = "black", label = "Observed")
-plt.plot(stats_x, stats_pdf, linewidth=2, label=f"Normal, (μ={stats_mean:.0f}, σ={stats_std:.0f})")
 plt.axvline(x = stats_mean, color = "black", linestyle = "--", label = f"Mean, {stats_mean:.0f}")
 plt.xlabel("Iterations needed")
 plt.ylabel("Density")
