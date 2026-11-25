@@ -23,8 +23,6 @@ def score(S):
 
     return score
 
-S = genRandText()
-
 # Scoring Loop
 score_list = []
 n = int(input("Number of iterations for task 1: "))
@@ -213,7 +211,7 @@ for x in mutation_rate:
         
             score_list.append(current_score)
 
-            if current_score == 62:
+            if current_score == len(T):
                 success_counts[x] += 1
                 successful_iterations[x].append(i + 1)
                 break
@@ -289,10 +287,10 @@ for i in range(0, n):
         break
 
 print("Initial string: ", initial_S)
-print("Initial string score: ", score(genRandText()))
+print("Initial string score: ", score(initial_S))
 print("Final string: ", S) 
 print("Final string score: ", current_score) 
-print("Number of attempts: ", len(score_list))
+print("Number of attempts: ", len(score_list) - 1)
 
 plt.plot(score_list)
 plt.xlabel("Iterations")
