@@ -43,13 +43,12 @@ for i in range(0, n):
 
 range_scores = max(score_list) - min(score_list)
 
-# Text Output
+# Output Messages
 print("Best monkey score:   ", max(score_list))
 print("Worst monkey score:  ", min(score_list))
 print("Mean monkey score:   ", sum(score_list) / len(score_list))
 
-## Graphical Output
-# Histogram
+# Output Histogram
 plt.hist(score_list, bins = range(range_scores + 1), edgecolor = "black")
 plt.title("Distribution of Monkey scores")
 plt.xlabel("Monkey scores")
@@ -60,7 +59,7 @@ plt.show()
 
 ### Task 2
 
-#Random Mutation Function
+# Random Mutation Function
 def babyS(S):
     alphabet = "abcdefghijklmnopqrstuvwxyz. "
 
@@ -110,6 +109,7 @@ for i in range(0, number_of_runs):
     else:
         runs_over_20000 += 1
 
+# Simple Statistics of Outputs
 mean_iterations = sum(iteration_list) / len(iteration_list)
 data = np.array(iteration_list)
 std_iterations = data.std(ddof = 1)
@@ -119,14 +119,16 @@ pdf = np.exp(-0.5 * ((x - mean_iterations) / std_iterations) ** 2) / (std_iterat
 stats_iteration_list = []
 omitted_iterations = []
 
+# Removes Anomolous Results
 for i in range(0, number_of_runs):
     if iteration_list[i] < mean_iterations - 3 * std_iterations:
-        omitted_iterations.apped(iteration_list[i])
+        omitted_iterations.append(iteration_list[i])
     elif iteration_list[i] > mean_iterations + 3 * std_iterations:
         omitted_iterations.append(iteration_list[i])
     else:
         stats_iteration_list.append(iteration_list[i])
 
+# Simple Statistics of Outputs, with anomolous results removed
 stats_mean = sum(stats_iteration_list) / len(stats_iteration_list)
 stats_data = np.array(stats_iteration_list)
 stats_std = stats_data.std(ddof = 1)
@@ -170,14 +172,14 @@ plt.show()
 
 ### Task 3
 
-#   3a: Changing Mutation Rates
+##  3a: Changing Mutation Rates
 
 def offspringS(S, x):
     
     assert 1 <= x <= len(S), "Mutation rate cannot be outside [1, 62]"
     
     L = list(S) 
-    random_positions_in_L = random.sample(range(len(L)), x)  # Selects x random positions from L without repeatition.
+    random_positions_in_L = random.sample(range(len(L)), x)
     
     for i in random_positions_in_L:
         L[i] = random.choice(alphabet)
@@ -247,6 +249,7 @@ for x in mutation_rate:
     else:
         print("There were no successful runs")    
 
+# Ouput Graph
 plt.xlabel("Iteration")
 plt.ylabel("Score")
 plt.title("Evolution of Score")
@@ -256,8 +259,9 @@ plt.show()
 
 
 
-#   3b: Shorter Target String
+##  3b: Shorter Target String
 
+# Random String Function
 def short_genRandText():
     alphabet = "abcdefghijklmnopqrstuvwxyz. "
     A = ""
@@ -270,6 +274,7 @@ def short_genRandText():
 A = short_genRandText
 B = "methinks it is like a weasel"
 
+# String Scoring Function
 def short_score(A):
     T = "methinks it is like a weasel"
     assert len(A) == len(B)
@@ -281,6 +286,7 @@ def short_score(A):
     
     return short_score
 
+# Random Mutation Function
 def babyA(A):
     alphabet = "abcdefghijklmnopqrstuvwxyz. "
 
@@ -297,6 +303,7 @@ def babyA(A):
         
     return A_dash
 
+# Loop Function
 def A_loop():
     A = short_genRandText()
     short_current_score = short_score(A)
@@ -323,6 +330,7 @@ for i in range(number_of_runs_each):
 for i in range(number_of_runs_each):
     short_iteration_list.append(A_loop())
 
+# Simple Statistics of Outputs
 short_mean_iterations = sum(short_iteration_list) / len(short_iteration_list)
 short_data = np.array(short_iteration_list)
 short_std_iterations = short_data.std(ddof = 1)
@@ -348,19 +356,22 @@ for i in range(0, number_of_runs_each):
     else:
         short_stats_list.append(short_iteration_list[i])
 
+# Simple Statistics of Outputs, with anomolous results removed
 short_stats_mean = sum(short_stats_list) / len(short_stats_list)
 short_stats_data = np.array(short_stats_list)
 short_stats_std = short_stats_data.std(ddof = 1)
 
-histogram_titles = ["Longer Text", "Shorter Text"]
-histogram_data = [stats_mean, short_stats_mean]
+bar_graph_titles = ["Longer Text", "Shorter Text"]
+bar_graph_data = [stats_mean, short_stats_mean]
 
+# Output Messages
 print("The following results are presented as longer text, shorter text:")
 print("Fewest iterations needed each text was", min(stats_iteration_list), "&", min(short_stats_list))
 print("Most iterations needed for the longer text was", max(stats_iteration_list), "&", max(short_stats_list))
 print("Mean number of iterations needed for the longer text was", stats_mean, "&", short_stats_mean)
 
-plt.bar(histogram_titles, histogram_data)
+# Output Bar Graph
+plt.bar(bar_graph_titles, bar_graph_data)
 plt.title("Mean iterations needed to reach target text")
 plt.xlabel("Target Text")
 plt.ylabel("Mean Iterations Needed")
@@ -368,11 +379,13 @@ plt.show()
 
 
 
-
+##  3c: Targets Incorrect Characters Only
 
 runs_p3 = int(input("\033[1mNumber of runs wanted for Task 3c: \033[0m"))
 iteration = (int(input("\033[1mMaximum number of iterations allowed for Task 3c: \033[0m")))
 iteration_per_run = []
+
+# Mutated Loop Function
 for run in range(runs_p3):
     S = genRandText()
     current_score = score(S)
@@ -404,15 +417,18 @@ for run in range(runs_p3):
     else:
         iteration_per_run.append(None)        
 
-# graphs, to show the progress across iteration
+# Simple Statistics of Outputs
 mutated_mean = sum(iteration_per_run) / len(iteration_per_run)
 mutated_data = np.array(iteration_per_run)
 mutated_std = mutated_data.std(ddof = 1)
 
+# Output Messages
 print("Fewest iterations needed was", min(iteration_per_run))
 print("Most iterations needed was", max(iteration_per_run))
 print("Mean number of iterations needed was", mutated_mean)
 
+# Output Graphs
+# Scatter Graph
 plt.scatter(range(1, len(iteration_per_run) + 1), iteration_per_run)
 plt.axhline(y = mutated_mean, color = "black", linestyle = "--", label = f"Mean, {mutated_mean:.0f}")
 plt.xlabel("Run number")
@@ -421,6 +437,7 @@ plt.title(f"Number of iterations needed for each run ({len(iteration_per_run)} r
 plt.legend()
 plt.show()
 
+# Histogram
 plt.hist(mutated_data, bins = 40, density = True, edgecolor = "black", label = "Observed")
 plt.axvline(x = mutated_mean, color = "black", linestyle = "--", label = f"Mean, {mutated_mean:.0f}")
 plt.xlabel("Iterations needed")
