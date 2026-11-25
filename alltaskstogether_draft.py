@@ -50,9 +50,9 @@ print("Mean monkey score:   ", sum(score_list) / len(score_list))
 
 # Output Histogram
 plt.hist(score_list, bins = range(range_scores + 1), edgecolor = "black")
-plt.title("Distribution of Monkey scores")
-plt.xlabel("Monkey scores")
-plt.ylabel("Frequency")
+plt.title("Distribution of Monkey scores", fontsize = 20)
+plt.xlabel("Monkey scores", fontsize = 15)
+plt.ylabel("Frequency", fontsize = 15)
 plt.show()
 
 
@@ -152,18 +152,18 @@ print("The number of runs over the iteration limit (20,000) was", runs_over_2000
 # Adjusted Scatter Graph
 plt.scatter(range(1, len(stats_iteration_list) + 1), stats_iteration_list)
 plt.axhline(y = stats_mean, color = "black", linestyle = "--", label = f"Mean, {stats_mean:.0f}")
-plt.xlabel("Run number")
-plt.ylabel("Iterations needed")
-plt.title(f"Number of iterations needed for each run ({len(stats_iteration_list)} runs)")
+plt.xlabel("Run number", fontsize = 15)
+plt.ylabel("Iterations needed", fontsize = 15)
+plt.title(f"Number of iterations needed for each run ({len(stats_iteration_list)} runs)", fontsize = 15)
 plt.legend()
 plt.show()
 
 # Adjusted Histogram
 plt.hist(stats_data, bins = 40, density = True, edgecolor = "black", label = "Observed")
 plt.axvline(x = stats_mean, color = "black", linestyle = "--", label = f"Mean, {stats_mean:.0f}")
-plt.xlabel("Iterations needed")
-plt.ylabel("Density")
-plt.title(f"Distribution of non-anomolous iterations needed ({len(stats_iteration_list)} runs)")
+plt.xlabel("Iterations needed", fontsize = 15)
+plt.ylabel("Density", fontsize = 15)
+plt.title(f"Distribution of non-anomolous iterations needed ({len(stats_iteration_list)} runs)", fontsize = 15)
 plt.legend()
 plt.show()
 
@@ -372,9 +372,9 @@ print("Mean number of iterations needed for the longer text was", stats_mean, "&
 
 # Output Bar Graph
 plt.bar(bar_graph_titles, bar_graph_data)
-plt.title("Mean iterations needed to reach target text")
-plt.xlabel("Target Text")
-plt.ylabel("Mean Iterations Needed")
+plt.title("Mean iterations needed to reach target text", fontsize = 20)
+plt.xlabel("Target Text", fontsize = 15)
+plt.ylabel("Mean Iterations Needed", fontsize = 15)
 plt.show()
 
 
@@ -431,17 +431,17 @@ print("Mean number of iterations needed was", mutated_mean)
 # Scatter Graph
 plt.scatter(range(1, len(iteration_per_run) + 1), iteration_per_run)
 plt.axhline(y = mutated_mean, color = "black", linestyle = "--", label = f"Mean, {mutated_mean:.0f}")
-plt.xlabel("Run number")
-plt.ylabel("Iterations needed")
-plt.title(f"Number of iterations needed for each run ({len(iteration_per_run)} runs)")
+plt.xlabel("Run number", fontsize = 15)
+plt.ylabel("Iterations needed", fontsize = 15)
+plt.title(f"Number of iterations needed for each run ({len(iteration_per_run)} runs)", fontsize = 15)
 plt.legend()
 plt.show()
 
 # Histogram
 plt.hist(mutated_data, bins = 40, density = True, edgecolor = "black", label = "Observed")
 plt.axvline(x = mutated_mean, color = "black", linestyle = "--", label = f"Mean, {mutated_mean:.0f}")
-plt.xlabel("Iterations needed")
-plt.ylabel("Density")
-plt.title(f"Distribution of iterations needed ({len(iteration_per_run)} runs)")
+plt.xlabel("Iterations needed", fontsize = 15)
+plt.ylabel("Density", fontsize = 15)
+plt.title(f"Distribution of iterations needed ({len(iteration_per_run)} runs)", fontsize = 20)
 plt.legend()
 plt.show()
