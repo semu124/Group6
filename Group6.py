@@ -135,7 +135,7 @@ stats_std = stats_data.std(ddof = 1)
 # Output Messages
 print("Fewest iterations needed was", min(stats_iteration_list))
 print("Most iterations needed was", max(stats_iteration_list))
-print("Mean number of iterations needed was", mean_iterations)
+print("Mean number of iterations needed was", stats_mean)
 print("The number of runs over the iteration limit was", runs_over_limit)
 
 # Output Graphs
