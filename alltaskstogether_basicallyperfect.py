@@ -301,7 +301,7 @@ def A_loop():
     short_current_score = short_score(A)
     short_total_iterations = 0
 
-    while A != B :
+    while A != B and short_total_iterations < limit + 1:
         A_dash = babyA(A)
         short_new_score = short_score(A_dash)
         short_total_iterations += 1
@@ -313,18 +313,37 @@ def A_loop():
     return short_total_iterations
 
 number_of_runs_each = int(input("\033[1mNumber of runs wanted for Task 3b: \033[0m"))
+print("\033[1mThe iteration limit will be the same as on Task 2.\033[0m")
 iteration_list = []
 short_iteration_list = []
 
 for i in range(number_of_runs_each):
     iteration_list.append(S_loop())
 
+runs_over_limit = 0
+middle_iterations = []
+
+for i in range(0, len(iteration_list)):
+    if iteration_list[i] == limit + 1:
+        runs_over_limit += 1
+    else:
+        middle_iterations.append(iteration_list[i])
+
 for i in range(number_of_runs_each):
     short_iteration_list.append(A_loop())
 
+short_runs_over_limit = 0
+short_middle_iterations = []
+
+for i in range(0, len(short_iteration_list)):
+    if short_iteration_list[i] == limit + 1:
+        short_runs_over_limit += 1
+    else:
+        short_middle_iterations.append(short_iteration_list[i])
+
 # Simple Statistics of Outputs
-short_mean_iterations = sum(short_iteration_list) / len(short_iteration_list)
-short_data = np.array(short_iteration_list)
+short_mean_iterations = sum(short_middle_iterations) / len(short_middle_iterations)
+short_data = np.array(short_middle_iterations)
 short_std_iterations = short_data.std(ddof = 1)
 short_x = np.linspace(data.min() - short_std_iterations, short_data.max() + short_std_iterations, 500)
 short_pdf = np.exp(-0.5 * ((x - short_mean_iterations) / short_std_iterations) ** 2) / (short_std_iterations * np.sqrt(2 * np.pi))
@@ -333,28 +352,24 @@ stats_iteration_list = []
 short_stats_list = []
 
 for i in range(0, number_of_runs_each):
-    if iteration_list[i] < mean_iterations - 3 * std_iterations:
+    if middle_iterations[i] < mean_iterations - 3 * std_iterations:
         continue
-    elif iteration_list[i] > mean_iterations + 3 * std_iterations:
+    elif middle_iterations[i] > mean_iterations + 3 * std_iterations:
         continue
     else:
-        stats_iteration_list.append(iteration_list[i])
+        stats_iteration_list.append(middle_iterations[i])
 
 for i in range(0, number_of_runs_each):
-    if short_iteration_list[i] < short_mean_iterations - 3 * short_std_iterations:
+    if short_middle_iterations[i] < short_mean_iterations - 3 * short_std_iterations:
         continue
-    elif short_iteration_list[i] > short_mean_iterations + 3 * short_std_iterations:
+    elif short_middle_iterations[i] > short_mean_iterations + 3 * short_std_iterations:
         continue
     else:
-        short_stats_list.append(short_iteration_list[i])
+        short_stats_list.append(short_middle_iterations[i])
 
 # Simple Statistics of Outputs, with anomolous results removed
 short_stats_mean = sum(short_stats_list) / len(short_stats_list)
-short_stats_data = np.array(short_stats_list)
-short_stats_std = short_stats_data.std(ddof = 1)
-
-bar_graph_titles = ["Longer Text", "Shorter Text"]
-bar_graph_data = [stats_mean, short_stats_mean]
+stats_mean = sum(stats_iteration_list) / len(stats_iteration_list)
 
 # Output Messages
 print("The following results are presented as longer text, shorter text:")
@@ -367,7 +382,7 @@ print("Mean number of iterations needed for the longer text was", stats_mean, "&
 ##  3c: Targets Incorrect Characters Only
 
 runs_p3 = int(input("\033[1mNumber of runs wanted for Task 3c: \033[0m"))
-iteration = (int(input("\033[1mMaximum number of iterations allowed for Task 3c: \033[0m")))
+print("\033[1mThe iteration limit will be the same as on Task 2.\033[0m")
 iteration_per_run = []
 
 # Mutated Loop Function
@@ -376,7 +391,7 @@ for run in range(runs_p3):
     current_score = score(S)
     iterations_taken = 0
     success = False
-    for i in range(iteration):
+    for i in range(limit):
         incorrect_position =[i for i in range(len(S)) if S[i] != T[i]]
         if not incorrect_position:
           success = True
@@ -431,7 +446,7 @@ omitted_iterations_under_limit = []
 runs_over_limit = 0
 
 for i in range(0, len(omitted_mutated_iterations)):
-    if omitted_iterations[i] < iteration:
+    if omitted_mutated_iterations[i] < limit:
         omitted_iterations_under_limit.append(omitted_mutated_iterations[i])
     else:
         runs_over_limit += 1
