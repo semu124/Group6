@@ -31,7 +31,7 @@ def score(S):
 
 # Scoring Loop
 score_list = []
-n = int(input("\033[1mNumber of iterations wanted for Task 1 (1000 Recommended): \033[0m"))
+n = int(input("\033[1mNumber of iterations wanted for Task 1: \033[0m"))
 
 for i in range(0, n):
     S = genRandText()
@@ -76,8 +76,8 @@ def babyS(S):
         
     return S_dash
 
-number_of_runs = int(input("\033[1mNumber of runs wanted for Task 2 (100 Recommended): \033[0m"))
-limit = int(input("\033[1mMaximum number of iterations allowed for Task 2 (20,000 Recommended): \033[0m"))
+number_of_runs = int(input("\033[1mNumber of runs wanted for Task 2: \033[0m"))
+limit = int(input("\033[1mMaximum number of iterations allowed for Task 2: \033[0m"))
 
 # Loop Function
 def S_loop():
@@ -115,8 +115,6 @@ for i in range(0, len(iteration_list)):
 mean_iterations = sum(middle_iterations) / len(middle_iterations)
 data = np.array(middle_iterations)
 std_iterations = data.std(ddof = 1)
-x = np.linspace(data.min() - std_iterations, data.max() + std_iterations, 500)
-pdf = np.exp(-0.5 * ((x - mean_iterations) / std_iterations) ** 2) / (std_iterations * np.sqrt(2 * np.pi))
 
 stats_iteration_list = []
 
@@ -184,7 +182,7 @@ def offspringS(S, x):
     return S_dash
 
 print("\033[1mWe will be testing mutation rates: 1, 3, 6, 12, 24\033[0m")
-runs = int(input("\033[1mNumber of runs wanted for Task 3a (10 Recommended): \033[0m"))
+runs = int(input("\033[1mNumber of runs wanted for Task 3a: \033[0m"))
 n = int(input("\033[1mMaximum number of iterations allowed for Task 3a: \033[0m"))
 mutation_rate = [1, 3, 6, 12, 24]
 results = {}
@@ -345,13 +343,11 @@ for i in range(0, len(short_iteration_list)):
 short_mean_iterations = sum(short_middle_iterations) / len(short_middle_iterations)
 short_data = np.array(short_middle_iterations)
 short_std_iterations = short_data.std(ddof = 1)
-short_x = np.linspace(data.min() - short_std_iterations, short_data.max() + short_std_iterations, 500)
-short_pdf = np.exp(-0.5 * ((x - short_mean_iterations) / short_std_iterations) ** 2) / (short_std_iterations * np.sqrt(2 * np.pi))
 
 stats_iteration_list = []
 short_stats_list = []
 
-for i in range(0, number_of_runs_each):
+for i in range(0, len(middle_iterations)):
     if middle_iterations[i] < mean_iterations - 3 * std_iterations:
         continue
     elif middle_iterations[i] > mean_iterations + 3 * std_iterations:
@@ -391,33 +387,41 @@ for run in range(runs_p3):
     current_score = score(S)
     iterations_taken = 0
     success = False
-    for i in range(limit):
-        incorrect_position =[i for i in range(len(S)) if S[i] != T[i]]
-        if not incorrect_position:
-          success = True
-          break
+    while S != T and iterations_taken < limit + 1:
+        for i in range(limit):
+            incorrect_position =[i for i in range(len(S)) if S[i] != T[i]]
+            if not incorrect_position:
+                success = True
+                break
        
-        position = random.choice(incorrect_position)
+            position = random.choice(incorrect_position)
      
-        new_character = random.choice(alphabet)
-        S_prime = list(S)
-        S_prime[position] = new_character
-        S_prime = "".join(S_prime)
-        new_score = score(S_prime)
+            new_character = random.choice(alphabet)
+            S_prime = list(S)
+            S_prime[position] = new_character
+            S_prime = "".join(S_prime)
+            new_score = score(S_prime)
 
-        if new_score > current_score:
-            S = S_prime
-            current_score = new_score
-            iterations_taken = i + 1 
-        if current_score == len(S):
-            success = True
-            break 
-    if success:
-        iteration_per_run.append(iterations_taken)
+            if new_score > current_score:
+                S = S_prime
+                current_score = new_score
+                iterations_taken = i + 1 
+            if current_score == len(S):
+                success = True
+                break 
+        if success:
+            iteration_per_run.append(iterations_taken)
+        else:
+            iteration_per_run.append(None)        
+
+runs_over_limit = 0
+mutated_middle_iterations = []
+
+for i in range(0, len(iteration_per_run)):
+    if iteration_per_run[i] == limit + 1:
+        runs_over_limit += 1
     else:
-        iteration_per_run.append(None)        
-
-
+        mutated_middle_iterations.append(iteration_per_run[i])
 
 # Simple Statistics of Outputs
 mutated_mean = sum(iteration_per_run) / len(iteration_per_run)
@@ -428,7 +432,7 @@ stats_mutated_list = []
 omitted_mutated_iterations = []
 
 # Removes Anomolous Results
-for i in range(0, runs_p3):
+for i in range(0, len(iteration_per_run)):
     if iteration_per_run[i] < mutated_mean - 3 * mutated_std:
         omitted_mutated_iterations.append(iteration_per_run[i])
     elif iteration_per_run[i] > mutated_mean + 3 * mutated_std:
@@ -436,18 +440,18 @@ for i in range(0, runs_p3):
     else:
         stats_mutated_list.append(iteration_per_run[i])
 
+
 # Simple Statistics of Outputs, with anomolous results removed
 stats_mutated_mean = sum(stats_mutated_list) / len(stats_mutated_list)
 stats_mutated_data = np.array(stats_mutated_list)
 stats_mutated_std = stats_mutated_data.std(ddof = 1)
 omitted_mutated_iterations.sort()
 
-omitted_iterations_under_limit = []
 runs_over_limit = 0
 
 for i in range(0, len(omitted_mutated_iterations)):
     if omitted_mutated_iterations[i] < limit:
-        omitted_iterations_under_limit.append(omitted_mutated_iterations[i])
+        continue
     else:
         runs_over_limit += 1
 
@@ -455,7 +459,6 @@ for i in range(0, len(omitted_mutated_iterations)):
 print("Fewest iterations needed was", min(stats_mutated_list))
 print("Most iterations needed was", max(stats_mutated_list))
 print("Mean number of iterations needed was", stats_mutated_mean)
-print("The omitted values were", omitted_iterations_under_limit)
 print("The number of runs over the iteration limit was", )
 
 # Output Graphs
