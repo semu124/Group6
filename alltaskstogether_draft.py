@@ -76,13 +76,17 @@ def babyS(S):
         
     return S_dash
 
+number_of_runs = int(input("\033[1mNumber of runs wanted for Task 2 (100 Recommended): \033[0m"))
+limit = int(input("\033[1mMaximum number of iterations allowed for Task 2 (20,000 Recommended): \033[0m"))
+
 # Loop Function
 def S_loop():
     S = genRandText()
     current_score = score(S)
     total_iterations = 0
 
-    while S != T :
+
+    while S != T and total_iterations < limit + 1:
         S_dash = babyS(S)
         new_score = score(S_dash)
         total_iterations += 1
@@ -93,21 +97,19 @@ def S_loop():
 
     return total_iterations
 
-number_of_runs = int(input("\033[1mNumber of runs wanted for Task 2 (100 Recommended): \033[0m"))
-limit = int(input("\033[1mMaximum number of iterations allowed for Task 2 (20,000 Recommended): \033[0m"))
 iteration_list = []
 
 for i in range(number_of_runs):
     iteration_list.append(S_loop())
 
 runs_over_limit = 0
-
 middle_iterations = []
+
 for i in range(0, len(iteration_list)):
-    if iteration_list[i] < limit:
-        middle_iterations.append(iteration_list[i])
-    else:
+    if iteration_list[i] == limit + 1:
         runs_over_limit += 1
+    else:
+        middle_iterations.append(iteration_list[i])
 
 # Simple Statistics of Outputs
 mean_iterations = sum(middle_iterations) / len(middle_iterations)
@@ -117,14 +119,13 @@ x = np.linspace(data.min() - std_iterations, data.max() + std_iterations, 500)
 pdf = np.exp(-0.5 * ((x - mean_iterations) / std_iterations) ** 2) / (std_iterations * np.sqrt(2 * np.pi))
 
 stats_iteration_list = []
-omitted_iterations = []
 
 # Removes Anomolous Results
 for i in range(0, len(middle_iterations)):
     if middle_iterations[i] < mean_iterations - 3 * std_iterations:
-        omitted_iterations.append(middle_iterations[i])
+        continue
     elif middle_iterations[i] > mean_iterations + 3 * std_iterations:
-        omitted_iterations.append(middle_iterations[i])
+        continue
     else:
         stats_iteration_list.append(middle_iterations[i])
 
@@ -132,19 +133,11 @@ for i in range(0, len(middle_iterations)):
 stats_mean = sum(stats_iteration_list) / len(stats_iteration_list)
 stats_data = np.array(stats_iteration_list)
 stats_std = stats_data.std(ddof = 1)
-omitted_iterations.sort()
-
-omitted_iterations_under_limit = []
-
-for i in range(0, len(omitted_iterations)):
-    if omitted_iterations[i] < limit:
-        omitted_iterations_under_limit.append(omitted_iterations[i])
 
 # Output Messages
 print("Fewest iterations needed was", min(stats_iteration_list))
 print("Most iterations needed was", max(stats_iteration_list))
 print("Mean number of iterations needed was", mean_iterations)
-print("The omitted values were:", omitted_iterations_under_limit)
 print("The number of runs over the iteration limit was", runs_over_limit)
 
 # Output Graphs
@@ -368,13 +361,6 @@ print("The following results are presented as longer text, shorter text:")
 print("Fewest iterations needed each text was", min(stats_iteration_list), "&", min(short_stats_list))
 print("Most iterations needed for the longer text was", max(stats_iteration_list), "&", max(short_stats_list))
 print("Mean number of iterations needed for the longer text was", stats_mean, "&", short_stats_mean)
-
-# Output Bar Graph
-plt.bar(bar_graph_titles, bar_graph_data)
-plt.title("Mean iterations needed to reach target text", fontsize = 20)
-plt.xlabel("Target Text", fontsize = 15)
-plt.ylabel("Mean Iterations Needed", fontsize = 15)
-plt.show()
 
 
 
