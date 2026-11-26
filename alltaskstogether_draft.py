@@ -31,7 +31,7 @@ def score(S):
 
 # Scoring Loop
 score_list = []
-n = int(input("\033[1mNumber of iterations wanted for Task 1 (Recommended 1000): \033[0m"))
+n = int(input("\033[1mNumber of iterations wanted for Task 1 (1000 Recommended): \033[0m"))
 
 for i in range(0, n):
     S = genRandText()
@@ -50,9 +50,9 @@ print("Mean monkey score:   ", sum(score_list) / len(score_list))
 
 # Output Scatter Graph
 plt.scatter(range(1, len(score_list) + 1), score_list)
-plt.xlabel("Iteration")
-plt.ylabel("Monkey Score")
-plt.title("Distribution of Monkey Scores")
+plt.xlabel("Iteration", fontsize = 15)
+plt.ylabel("Monkey Score", fontsize = 15)
+plt.title("Distribution of Monkey Scores", fontsize = 20)
 plt.show()
 
 
@@ -93,23 +93,25 @@ def S_loop():
 
     return total_iterations
 
-number_of_runs = int(input("\033[1mNumber of runs wanted for Task 2: \033[0m"))
+number_of_runs = int(input("\033[1mNumber of runs wanted for Task 2 (100 Recommended): \033[0m"))
+limit = int(input("\033[1mMaximum number of iterations allowed for Task 2 (20,000 Recommended): \033[0m"))
 iteration_list = []
 
 for i in range(number_of_runs):
     iteration_list.append(S_loop())
 
-runs_over_20000 = 0
+runs_over_limit = 0
 
-for i in range(0, number_of_runs):
-    if iteration_list[i] < 20000:
-        continue
+middle_iterations = []
+for i in range(0, len(iteration_list)):
+    if iteration_list[i] < limit:
+        middle_iterations.append(iteration_list[i])
     else:
-        runs_over_20000 += 1
+        runs_over_limit += 1
 
 # Simple Statistics of Outputs
-mean_iterations = sum(iteration_list) / len(iteration_list)
-data = np.array(iteration_list)
+mean_iterations = sum(middle_iterations) / len(middle_iterations)
+data = np.array(middle_iterations)
 std_iterations = data.std(ddof = 1)
 x = np.linspace(data.min() - std_iterations, data.max() + std_iterations, 500)
 pdf = np.exp(-0.5 * ((x - mean_iterations) / std_iterations) ** 2) / (std_iterations * np.sqrt(2 * np.pi))
@@ -118,13 +120,13 @@ stats_iteration_list = []
 omitted_iterations = []
 
 # Removes Anomolous Results
-for i in range(0, number_of_runs):
-    if iteration_list[i] < mean_iterations - 3 * std_iterations:
-        omitted_iterations.append(iteration_list[i])
-    elif iteration_list[i] > mean_iterations + 3 * std_iterations:
-        omitted_iterations.append(iteration_list[i])
+for i in range(0, len(middle_iterations)):
+    if middle_iterations[i] < mean_iterations - 3 * std_iterations:
+        omitted_iterations.append(middle_iterations[i])
+    elif middle_iterations[i] > mean_iterations + 3 * std_iterations:
+        omitted_iterations.append(middle_iterations[i])
     else:
-        stats_iteration_list.append(iteration_list[i])
+        stats_iteration_list.append(middle_iterations[i])
 
 # Simple Statistics of Outputs, with anomolous results removed
 stats_mean = sum(stats_iteration_list) / len(stats_iteration_list)
@@ -132,18 +134,18 @@ stats_data = np.array(stats_iteration_list)
 stats_std = stats_data.std(ddof = 1)
 omitted_iterations.sort()
 
-omitted_iterations_under_20000 = []
+omitted_iterations_under_limit = []
 
 for i in range(0, len(omitted_iterations)):
-    if omitted_iterations[i] < 20000:
-        omitted_iterations_under_20000.append(omitted_iterations[i])
+    if omitted_iterations[i] < limit:
+        omitted_iterations_under_limit.append(omitted_iterations[i])
 
 # Output Messages
 print("Fewest iterations needed was", min(stats_iteration_list))
 print("Most iterations needed was", max(stats_iteration_list))
 print("Mean number of iterations needed was", mean_iterations)
-print("The omitted values were:", omitted_iterations_under_20000)
-print("The number of runs over the iteration limit (20,000) was", runs_over_20000)
+print("The omitted values were:", omitted_iterations_under_limit)
+print("The number of runs over the iteration limit was", runs_over_limit)
 
 # Output Graphs
 # Adjusted Scatter Graph
@@ -189,7 +191,7 @@ def offspringS(S, x):
     return S_dash
 
 print("\033[1mWe will be testing mutation rates: 1, 3, 6, 12, 24\033[0m")
-runs = int(input("\033[1mNumber of runs wanted for Task 3a: \033[0m"))
+runs = int(input("\033[1mNumber of runs wanted for Task 3a (10 Recommended): \033[0m"))
 n = int(input("\033[1mMaximum number of iterations allowed for Task 3a: \033[0m"))
 mutation_rate = [1, 3, 6, 12, 24]
 results = {}
