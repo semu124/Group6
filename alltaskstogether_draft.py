@@ -31,7 +31,7 @@ def score(S):
 
 # Scoring Loop
 score_list = []
-n = int(input("\033[1mNumber of iterations wanted for Task 1: \033[0m"))
+n = int(input("\033[1mNumber of iterations wanted for Task 1 (Recommended 1000): \033[0m"))
 
 for i in range(0, n):
     S = genRandText()
@@ -48,11 +48,11 @@ print("Best monkey score:   ", max(score_list))
 print("Worst monkey score:  ", min(score_list))
 print("Mean monkey score:   ", sum(score_list) / len(score_list))
 
-# Output Histogram
-plt.hist(score_list, bins = range(range_scores + 1), edgecolor = "black")
-plt.title("Distribution of Monkey scores", fontsize = 20)
-plt.xlabel("Monkey scores", fontsize = 15)
-plt.ylabel("Frequency", fontsize = 15)
+# Output Scatter Graph
+plt.scatter(range(1, len(score_list) + 1), score_list)
+plt.xlabel("Iteration")
+plt.ylabel("Monkey Score")
+plt.title("Distribution of Monkey Scores")
 plt.show()
 
 
@@ -75,8 +75,6 @@ def babyS(S):
         S_dash += L[i]
         
     return S_dash
-
-failed_runs = 0
 
 # Loop Function
 def S_loop():
@@ -132,7 +130,6 @@ for i in range(0, number_of_runs):
 stats_mean = sum(stats_iteration_list) / len(stats_iteration_list)
 stats_data = np.array(stats_iteration_list)
 stats_std = stats_data.std(ddof = 1)
-iterations_included = len(stats_iteration_list)
 omitted_iterations.sort()
 
 omitted_iterations_under_20000 = []
@@ -408,7 +405,7 @@ for run in range(runs_p3):
         if new_score > current_score:
             S = S_prime
             current_score = new_score
-        iterations_taken = i + 1 
+            iterations_taken = i + 1 
         if current_score == len(S):
             success = True
             break 
@@ -417,15 +414,46 @@ for run in range(runs_p3):
     else:
         iteration_per_run.append(None)        
 
+
+
 # Simple Statistics of Outputs
 mutated_mean = sum(iteration_per_run) / len(iteration_per_run)
 mutated_data = np.array(iteration_per_run)
 mutated_std = mutated_data.std(ddof = 1)
 
+stats_mutated_list = []
+omitted_mutated_iterations = []
+
+# Removes Anomolous Results
+for i in range(0, runs_p3):
+    if iteration_per_run[i] < mutated_mean - 3 * mutated_std:
+        omitted_mutated_iterations.append(iteration_per_run[i])
+    elif iteration_per_run[i] > mutated_mean + 3 * mutated_std:
+        omitted_mutated_iterations.append(iteration_per_run[i])
+    else:
+        stats_mutated_list.append(iteration_per_run[i])
+
+# Simple Statistics of Outputs, with anomolous results removed
+stats_mutated_mean = sum(stats_mutated_list) / len(stats_mutated_list)
+stats_mutated_data = np.array(stats_mutated_list)
+stats_mutated_std = stats_mutated_data.std(ddof = 1)
+omitted_mutated_iterations.sort()
+
+omitted_iterations_under_limit = []
+runs_over_limit = 0
+
+for i in range(0, len(omitted_mutated_iterations)):
+    if omitted_iterations[i] < iteration:
+        omitted_iterations_under_limit.append(omitted_mutated_iterations[i])
+    else:
+        runs_over_limit += 1
+
 # Output Messages
-print("Fewest iterations needed was", min(iteration_per_run))
-print("Most iterations needed was", max(iteration_per_run))
-print("Mean number of iterations needed was", mutated_mean)
+print("Fewest iterations needed was", min(stats_mutated_list))
+print("Most iterations needed was", max(stats_mutated_list))
+print("Mean number of iterations needed was", stats_mutated_mean)
+print("The omitted values were", omitted_iterations_under_limit)
+print("The number of runs over the iteration limit was", )
 
 # Output Graphs
 # Scatter Graph
